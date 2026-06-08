@@ -1,0 +1,467 @@
+# Mastering Prompt Engineering for DevOps
+
+## What is Prompt Engineering?
+
+Prompt Engineering is the process of designing clear and effective instructions for AI models to generate accurate, useful, and reliable responses.
+
+For DevOps engineers, prompt engineering helps with:
+
+* Script generation
+* Infrastructure as Code (IaC)
+* CI/CD pipeline creation
+* Kubernetes troubleshooting
+* Log analysis
+* Documentation generation
+* Root Cause Analysis (RCA)
+
+# 1. Zero-Shot Prompting
+
+In Zero-Shot Prompting, no examples are provided. The AI relies entirely on its existing knowledge.
+
+## Example
+
+### Prompt
+
+```text
+Write a shell script to back up log files from /var/log to /backup.
+```
+
+### Response
+
+```bash
+#!/bin/bash
+
+mkdir -p /backup
+cp -r /var/log/* /backup/
+
+echo "Backup completed."
+```
+
+### When to Use
+
+* Simple tasks
+* General explanations
+* Basic scripting
+
+# 2. Few-Shot Prompting
+
+In Few-Shot Prompting, a few examples are provided to guide the AI.
+
+## Example
+
+### Prompt
+
+```text
+Example 1:
+
+Create a file:
+
+touch app.log
+
+Example 2:
+
+Archive logs:
+
+tar -czf logs.tar.gz /var/log/*
+
+Now write a script to delete logs older than 7 days.
+```
+
+### Response
+
+```bash
+#!/bin/bash
+
+find /var/log -type f -mtime +7 -delete
+
+echo "Old logs deleted."
+```
+
+### When to Use
+
+* Similar repetitive tasks
+* Script generation
+* Configuration generation
+
+# 3. Multi-Shot Prompting
+
+Multi-Shot Prompting uses multiple examples to gradually teach a pattern.
+
+## Example
+
+### Prompt
+
+```text
+Example 1:
+kubectl create deployment nginx --image=nginx
+
+Example 2:
+kubectl get deployment nginx
+
+Example 3:
+kubectl describe deployment nginx
+
+Now scale the deployment to 5 replicas.
+```
+
+### Response
+
+```bash
+kubectl scale deployment nginx --replicas=5
+```
+
+### When to Use
+
+* Learning command patterns
+* CLI automation
+* Kubernetes operations
+
+# 4. Chain of Thought (CoT) Prompting
+
+CoT Prompting asks the AI to reason step-by-step before answering.
+
+## Example
+
+### Prompt
+
+```text
+My Kubernetes pod is in CrashLoopBackOff.
+
+Help me troubleshoot step-by-step.
+```
+
+### Response
+
+```text
+Step 1:
+Check pod status
+
+kubectl get pods
+
+Step 2:
+View logs
+
+kubectl logs <pod-name>
+
+Step 3:
+Describe pod
+
+kubectl describe pod <pod-name>
+
+Step 4:
+Identify image, configuration, or probe issues.
+```
+
+### When to Use
+
+* Troubleshooting
+* RCA
+* Complex debugging
+
+# 5. Role-Based Prompting
+
+Assign a role to the AI before asking a question.
+
+## Example
+
+### Prompt
+
+```text
+Act as a Senior DevOps Engineer.
+
+Review the following Jenkins pipeline and suggest improvements.
+```
+
+### Benefits
+
+* More accurate responses
+* Expert-level recommendations
+* Better context awareness
+
+### Common Roles
+
+* Senior DevOps Engineer
+* Kubernetes Administrator
+* AWS Solutions Architect
+* Site Reliability Engineer (SRE)
+* Security Engineer
+
+# 6. Structured Output Prompting
+
+Ask AI to return results in a specific format.
+
+## Example
+
+### Prompt
+
+```text
+Analyze this Kubernetes issue.
+
+Return the response in the format:
+
+Problem:
+Root Cause:
+Solution:
+Prevention:
+```
+
+### Response
+
+```text
+Problem:
+Pod CrashLoopBackOff
+
+Root Cause:
+Application startup failure
+
+Solution:
+Fix startup command
+
+Prevention:
+Implement readiness probes
+```
+
+### When to Use
+
+* Documentation
+* Incident reports
+* RCA reports
+* Runbooks
+
+# 7. Contextual Prompting
+
+Provide background information before asking a question.
+
+## Example
+
+### Prompt
+
+```text
+I have a Kubernetes cluster running on AWS EKS.
+
+My application started failing after deploying version 2.5.
+
+Analyze possible causes.
+```
+
+### Why It Works
+
+The additional context helps the AI generate more relevant responses.
+
+# 8. Persona Prompting
+
+Ask the AI to respond for a specific audience.
+
+## Example
+
+### Prompt
+
+```text
+Explain Kubernetes Pods to a beginner DevOps engineer.
+```
+
+### Response
+
+```text
+A Pod is the smallest deployable unit in Kubernetes.
+
+Think of it as a container wrapper that runs your application.
+```
+
+### Other Personas
+
+* Beginner
+* Intermediate
+* Senior Engineer
+* Manager
+* Interview Candidate
+
+# 9. Prompt Chaining
+
+Break a large task into smaller prompts.
+
+## Example
+
+### Prompt 1
+
+```text
+Analyze this application log.
+```
+
+### Prompt 2
+
+```text
+Identify the root cause.
+```
+
+### Prompt 3
+
+```text
+Generate a remediation plan.
+```
+
+### Prompt 4
+
+```text
+Create a Jira incident report.
+```
+
+This often produces better results than one massive prompt.
+
+# 10. Negative Prompting
+
+Tell the AI what NOT to do.
+
+## Example
+
+### Prompt
+
+```text
+Generate a Terraform script for AWS VPC.
+
+Do not use deprecated resources.
+Do not use hardcoded values.
+Do not include comments.
+```
+
+### Benefits
+
+* Reduces unwanted output
+* Produces cleaner results
+* Improves consistency
+
+# Prompt Formula for DevOps
+
+A simple formula:
+
+```text
+Role
++
+Context
++
+Task
++
+Output Format
++
+Constraints
+```
+
+## Example
+
+```text
+Act as a Senior DevOps Engineer.
+
+Context:
+Application running on EKS.
+
+Task:
+Investigate CrashLoopBackOff issue.
+
+Output Format:
+Problem
+Root Cause
+Solution
+
+Constraints:
+Keep response under 200 words.
+```
+
+# Best Practices
+
+## Be Specific
+
+Bad:
+
+```text
+Write a script.
+```
+
+Good:
+
+```text
+Write a Bash script that checks CPU, Memory, and Disk usage on Ubuntu Linux.
+```
+
+## Provide Context
+
+Bad:
+
+```text
+Fix my Kubernetes issue.
+```
+
+Good:
+
+```text
+My EKS pod entered CrashLoopBackOff after deployment.
+Analyze the issue.
+```
+
+## Specify Output Format
+
+Example:
+
+```text
+Return the answer as:
+
+- Problem
+- Root Cause
+- Solution
+```
+
+## Use Step-by-Step Reasoning
+
+Example:
+
+```text
+Explain your reasoning step-by-step.
+```
+
+Useful for:
+
+* Debugging
+* RCA
+* Architecture decisions
+
+## Iterate and Refine
+
+If the response is not accurate:
+
+* Add more context
+* Add examples
+* Add constraints
+* Specify output format
+
+# Interview Questions
+
+## What is Prompt Engineering?
+
+Prompt Engineering is the process of designing effective instructions that help AI models generate accurate and useful responses.
+
+## What is Zero-Shot Prompting?
+
+Asking the AI to perform a task without providing examples.
+
+## What is Few-Shot Prompting?
+
+Providing a few examples to guide the AI's response.
+
+## What is Chain of Thought Prompting?
+
+A technique that encourages the AI to reason step-by-step before answering.
+
+## What is Role-Based Prompting?
+
+Assigning a specific role such as DevOps Engineer or SRE to improve response quality.
+
+## What is Structured Output Prompting?
+
+Requesting responses in a predefined format such as JSON, YAML, tables, or incident reports.
+
+## Which Prompting Techniques Are Most Useful for DevOps?
+
+* Role-Based Prompting
+* Chain of Thought Prompting
+* Structured Output Prompting
+* Contextual Prompting
+* Prompt Chaining
