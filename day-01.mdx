@@ -1,0 +1,472 @@
+# AIOps, AI Agents, AI Assistants & AI in DevOps
+
+## What is AIOps?
+
+**AIOps (Artificial Intelligence for IT Operations)** is the use of AI and Machine Learning to automate and improve IT operations.
+
+AIOps helps DevOps and SRE teams by:
+
+- Monitoring infrastructure
+- Detecting anomalies
+- Predicting failures
+- Correlating events
+- Reducing alert noise
+- Automating remediation
+
+### Example
+
+Traditional Monitoring:
+
+- CPU > 90%
+- Alert generated
+- Engineer investigates
+
+AIOps:
+
+- Detects CPU spike
+- Correlates with memory leak
+- Identifies impacted services
+- Suggests or performs remediation automatically
+
+### Popular AIOps Tools
+
+- Dynatrace
+- Datadog AI
+- Splunk ITSI
+- New Relic AI
+- IBM Watson AIOps
+- Moogsoft
+
+# AI in DevOps Evolution
+
+```text
+Monitoring
+    ↓
+Automation
+    ↓
+AIOps
+    ↓
+Generative AI
+    ↓
+AI Agents
+```
+
+# Traditional AI in DevOps
+
+Traditional AI relies on:
+
+- Structured data
+- Historical datasets
+- Machine Learning models
+- Predefined rules
+
+It is mainly used for:
+
+- Prediction
+- Classification
+- Forecasting
+- Anomaly Detection
+
+## Example: Incident Detection & Prediction
+
+### Use Case
+
+Predict system failures before they occur.
+
+### How It Works
+
+1. Collect logs and metrics.
+2. Train ML models on historical incidents.
+3. Detect unusual patterns.
+4. Generate alerts.
+
+### Example
+
+CPU usage normally stays around 40%.
+
+Suddenly CPU spikes to 95%.
+
+Traditional AI:
+
+- Detects anomaly
+- Predicts possible outage
+- Generates alert
+
+### Advantages
+
+- Accurate for known scenarios
+- Fast anomaly detection
+- Works well with structured data
+
+### Limitations
+
+- Requires training data
+- Cannot explain issues well
+- Cannot generate new solutions
+- Struggles with unseen situations
+
+# Generative AI in DevOps
+
+Generative AI uses:
+
+- Large Language Models (LLMs)
+- Context understanding
+- Natural language processing
+
+Instead of just predicting problems, it can:
+
+- Explain issues
+- Generate solutions
+- Write code
+- Create documentation
+- Automate troubleshooting
+
+## Example: AI-Powered RCA
+
+### Use Case
+
+Root Cause Analysis (RCA)
+
+### Scenario
+
+A Kubernetes pod crashes.
+
+DevOps Engineer asks:
+
+```text
+Why did my Kubernetes pod crash?
+```
+
+Gen AI:
+
+- Reads logs
+- Analyzes events
+- Identifies OOMKilled error
+- Suggests memory increase
+- Generates YAML fix
+
+Example Response:
+
+```yaml
+resources:
+  limits:
+    memory: "1Gi"
+```
+
+### Additional Capabilities
+
+- Summarize logs
+- Generate runbooks
+- Write Terraform code
+- Create CI/CD pipelines
+- Explain Kubernetes errors
+- Generate shell scripts
+
+### Advantages
+
+- Human-like explanations
+- Handles unstructured data
+- Learns from context
+- Generates solutions dynamically
+
+### Limitations
+
+- Can hallucinate
+- Needs validation
+- May provide incorrect fixes
+
+# Traditional AI vs Generative AI
+
+| Feature | Traditional AI | Generative AI |
+|----------|---------------|---------------|
+| Data Type | Structured Data | Structured + Unstructured |
+| Goal | Predict | Generate |
+| Learning | Historical Training Data | Massive Language Training |
+| Output | Alerts & Predictions | Explanations & Solutions |
+| Use Cases | Anomaly Detection | RCA & Automation |
+| Flexibility | Limited | High |
+| Human Interaction | Minimal | Conversational |
+
+### Example
+
+Traditional AI:
+
+```text
+CPU usage > 90%
+Alert Generated
+```
+
+Generative AI:
+
+```text
+CPU usage is high because Service-A
+is consuming excessive memory after
+deployment version 2.3.
+
+Recommended Fix:
+Increase memory limits or rollback deployment.
+```
+
+# What is a Large Language Model (LLM)?
+
+A Large Language Model (LLM) is an AI model trained on huge amounts of text data to understand and generate human language.
+
+Examples:
+
+- GPT
+- Claude
+- Gemini
+- LLaMA
+- Mistral
+
+## What LLMs Can Do
+
+- Answer questions
+- Write code
+- Summarize logs
+- Generate documentation
+- Explain errors
+- Create scripts
+
+### DevOps Example
+
+Input:
+
+```text
+Write a shell script to check CPU,
+Memory and Disk Usage.
+```
+
+LLM Output:
+
+```bash
+#!/bin/bash
+
+echo "CPU:"
+top -bn1 | grep Cpu
+
+echo "Memory:"
+free -h
+
+echo "Disk:"
+df -h
+```
+
+# What is an AI Assistant?
+
+An AI Assistant helps humans perform tasks.
+
+It is reactive.
+
+It waits for user instructions.
+
+Examples:
+
+- ChatGPT
+- GitHub Copilot
+- Amazon Q
+- Google Gemini
+- Claude
+
+## Characteristics
+
+- Answers questions
+- Generates content
+- Provides recommendations
+- Requires human interaction
+
+### DevOps Example
+
+Engineer:
+
+```text
+Create a Jenkins Pipeline for Maven Project
+```
+
+Assistant:
+
+Generates Jenkinsfile.
+
+The assistant does not execute actions itself.
+
+# What is an AI Agent?
+
+An AI Agent is an autonomous system that can:
+
+- Understand goals
+- Make decisions
+- Use tools
+- Execute actions
+- Learn from outcomes
+
+Unlike assistants, agents can perform tasks without constant human input.
+
+## AI Assistant vs AI Agent
+
+| Feature | AI Assistant | AI Agent |
+|-----------|-------------|-----------|
+| Waits for Commands | Yes | No |
+| Autonomous | No | Yes |
+| Executes Actions | Limited | Yes |
+| Decision Making | Minimal | Advanced |
+| Goal-Oriented | No | Yes |
+| Tool Usage | Limited | Extensive |
+
+## Example: AI Assistant
+
+Engineer asks:
+
+```text
+Why is my Kubernetes Pod failing?
+```
+
+Assistant:
+
+```text
+Possible causes:
+- OOMKilled
+- CrashLoopBackOff
+- Image Pull Error
+```
+
+Stops here.
+
+## Example: AI Agent
+
+Goal:
+
+```text
+Fix failing Kubernetes Pod
+```
+
+Agent Actions:
+
+1. Connects to cluster.
+2. Reads logs.
+3. Identifies OOMKilled.
+4. Updates deployment YAML.
+5. Applies changes.
+6. Verifies pod health.
+7. Generates report.
+
+No human intervention required.
+
+# AI Agents in DevOps
+
+Future DevOps workflows may involve AI agents that:
+
+### CI/CD Agent
+
+- Creates pipelines
+- Fixes build failures
+- Reviews code
+
+### Kubernetes Agent
+
+- Monitors clusters
+- Scales workloads
+- Resolves issues
+
+### Security Agent
+
+- Detects vulnerabilities
+- Applies patches
+- Creates security reports
+
+### Cloud Cost Agent
+
+- Optimizes resources
+- Shuts down unused instances
+- Reduces cloud spending
+
+# AI Agent Architecture
+
+```text
+User Goal
+    ↓
+AI Agent
+    ↓
+Reasoning Engine (LLM)
+    ↓
+Tool Selection
+    ↓
+Execute Actions
+    ↓
+Observe Results
+    ↓
+Take Next Action
+```
+
+# Real DevOps AI Stack
+
+```text
+LLM
+ ↓
+AI Assistant
+ ↓
+AI Agent
+ ↓
+AIOps Platform
+ ↓
+Infrastructure
+```
+
+Example:
+
+GPT
+ ↓
+Amazon Q
+ ↓
+DevOps Agent
+ ↓
+Dynatrace AIOps
+ ↓
+AWS Infrastructure
+```
+
+# Interview Questions
+
+## 1. What is AIOps?
+
+AIOps is the application of AI and Machine Learning to automate IT operations, monitor systems, detect anomalies, and resolve incidents.
+
+## 2. What is the difference between Traditional AI and Generative AI?
+
+Traditional AI predicts and classifies based on historical data, while Generative AI creates new content, explanations, and solutions using LLMs.
+
+## 3. What is an LLM?
+
+A Large Language Model is a deep-learning model trained on massive text datasets to understand and generate human language.
+
+## 4. What is the difference between an AI Assistant and an AI Agent?
+
+An AI Assistant provides guidance and answers, while an AI Agent can autonomously take actions and achieve goals.
+
+## 5. Give examples of AI Assistants.
+
+- ChatGPT
+- GitHub Copilot
+- Amazon Q
+- Claude
+- Gemini
+
+## 6. Give examples of AIOps tools.
+
+- Dynatrace
+- Datadog AI
+- Splunk ITSI
+- New Relic AI
+- IBM Watson AIOps
+
+## 7. How can Generative AI help DevOps?
+
+- Root Cause Analysis
+- Log Summarization
+- Script Generation
+- Infrastructure as Code Generation
+- Automated Documentation
+- Incident Resolution
+
+## 8. Can AI Agents replace DevOps Engineers?
+
+No. AI Agents can automate repetitive tasks, but engineers are still required for architecture, governance, security, and decision-making.
