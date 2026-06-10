@@ -1,0 +1,26 @@
+# Build AI agent using Crew AI
+
+Crew AI is a platform that allows you to build AI agents using a visual interface.
+
+Steps: 
+1. Install Python3
+2. Create a virtual environment
+
+```bash
+python3 -m venv crew
+source crew/bin/activate
+```
+
+3. Install crew ai
+
+```bash
+pip install crewai
+crewai create crew <name>
+```
+select the agent you want to create 
+- Select a provider to set up: Ollama
+- Select a model to use: Llama3.1
+- Go to ollama and pull the model 
+    ```bash
+    ollama run llama3.1:8b
+    ```

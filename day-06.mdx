@@ -1,0 +1,136 @@
+## **Day 5: AI for Observability & Incident Response**
+### 📌 Topics
+- Introduction to AIOps
+- What is AIOps and What is not ?
+- AI-powered monitoring with **Enterprise Observability Platforms**
+
+### 📌 Introduction to AIOps
+
+**AIOps (Artificial Intelligence for IT Operations)** is the use of AI and Machine Learning to automate and improve IT operations.
+
+### What is AIOps, and what is it not?
+
+**AIOps** refers to the application of Artificial Intelligence (AI) and Machine Learning (ML) in IT operations to automate, monitor, and improve processes such as event correlation, anomaly detection, and root cause analysis.
+
+**AIOps is:**
+- Using AI/ML to analyze vast amounts of operational data (logs, metrics, traces).
+- Automating repetitive tasks, such as alert triage and incident remediation.
+- Enhancing observability by uncovering hidden patterns, predicting outages, and accelerating root cause analysis.
+- Integrating seamlessly with monitoring, ticketing, and notification tools for real-time responses.
+
+**AIOps is NOT:**
+- Just a dashboard or basic analytics tool.
+- Merely rule-based automation or traditional scripts.
+- A replacement for IT teams, but rather a tool to empower and assist them.
+- Magic—results depend on quality data, proper implementation, and continuous refinement.
+
+### AI-powered monitoring with **Enterprise Observability Platforms**
+
+**Dynatrace:** AI-powered monitoring platform that uses AI to analyze logs, metrics, and traces to detect anomalies and predict issues.
+
+**site24x7.com/app/demo** : AI-powered monitoring platform that uses AI to analyze logs, metrics, and traces to detect anomalies and predict issues.
+
+### Isolation forest for anomaly detection
+
+Isolation Forest is an unsupervised machine learning algorithm used for anomaly detection. It works by randomly partitioning data and measuring how quickly a data point can be isolated. Anomalies require fewer splits and therefore have shorter path lengths in the isolation trees. It is widely used in AIOps, cybersecurity, fraud detection, and monitoring systems to identify unusual behavior.
+
+## Proactive monitoring with AIOps
+
+**Proactive monitoring** is a proactive approach to monitoring that involves using AI to predict issues before they occur. It is a proactive approach to monitoring that involves using AI to predict issues before they occur.
+
+1. Create a virtual environment
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Linux/MacOS
+```
+2. Syetem logs 
+
+```bash
+https://github.com/iam-veeramalla/ai-assisted-devops/blob/main/day-6/system_logs.txt
+```
+3. Add this code to the file and run it
+
+** AIOPS log analysis code**
+
+```python
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import IsolationForest
+
+# Read log file
+log_file_path = "system_logs.txt"  # Update with your file path if needed
+with open(log_file_path, "r") as file:
+    logs = file.readlines()
+
+# Parse logs into a structured DataFrame
+data = []
+for log in logs:
+    parts = log.strip().split(" ", 3)  # Ensure the message part is captured fully
+    if len(parts) < 4:
+        continue  # Skip malformed lines
+    timestamp = parts[0] + " " + parts[1]
+    level = parts[2]
+    message = parts[3]
+    data.append([timestamp, level, message])
+
+df = pd.DataFrame(data, columns=["timestamp", "level", "message"])
+
+# Convert timestamp to datetime format for sorting
+df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+# Assign numeric scores to log levels
+level_mapping = {"INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
+df["level_score"] = df["level"].map(level_mapping)
+
+# Add message length as a new feature
+df["message_length"] = df["message"].apply(len)
+
+# AI Model for Anomaly Detection (Isolation Forest)
+model = IsolationForest(contamination=0.1, random_state=42)  # Lower contamination for better accuracy
+df["anomaly"] = model.fit_predict(df[["level_score", "message_length"]])
+
+# Mark anomalies in a readable format
+df["is_anomaly"] = df["anomaly"].apply(lambda x: "❌ Anomaly" if x == -1 else "✅ Normal")
+
+# Print only detected anomalies
+anomalies = df[df["is_anomaly"] == "❌ Anomaly"]
+print("\n🔍 **Detected Anomalies:**\n", anomalies)
+```
+
+simple log analysis code
+
+```python
+import pandas as pd
+from collections import Counter
+import re
+
+# Read log file
+log_file = "system_logs.txt"
+
+log_entries = []
+with open(log_file, "r") as file:
+    for line in file:
+        match = re.match(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+)", line.strip())
+        if match:
+            timestamp, level, message = match.groups()
+            log_entries.append([timestamp, level, message])
+
+# Convert to DataFrame
+df = pd.DataFrame(log_entries, columns=["timestamp", "level", "message"])
+df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+# Count errors in the last 30 seconds
+error_counts = Counter(df[df["level"] == "ERROR"]["timestamp"].dt.floor("30S"))
+
+# Threshold for detecting an anomaly (too many errors in a short time)
+threshold = 3
+
+# Detect error spikes
+for time, count in error_counts.items():
+    if count > threshold:
+        print(f"🚨 Anomaly detected! {count} ERROR logs in 30 seconds at {time}")
+
+# Show logs with anomalies
+print("\nFull Log Analysis:")
+print(df)
+```

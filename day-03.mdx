@@ -1,0 +1,169 @@
+# Project
+
+## Dockerfile Generator
+
+A GenAI powered tool that generates optimized Dockerfiles based on programming language input. This project uses Ollama with the Llama3 model to create Dockerfiles following best practices.
+
+## What is LLM?
+
+A Large Language Model (LLM) is an AI model trained on massive amounts of text data to understand and generate human language.
+
+### Examples
+
+* GPT
+* Claude
+* Gemini
+* Llama
+* Mistral
+
+| Feature               | Local LLM                                         | Hosted LLM                       |
+| --------------------- | ------------------------------------------------- | -------------------------------- |
+| **Where it runs**     | On your laptop, server, or private infrastructure | On a cloud provider's servers    |
+| **Internet required** | Usually No                                        | Yes                              |
+| **Data privacy**      | Data stays within your environment                | Data is sent to the provider     |
+| **Setup effort**      | Higher (install, manage models)                   | Very low (API or web UI)         |
+| **Hardware cost**     | Need powerful CPU/GPU for large models            | No hardware required             |
+| **Scalability**       | You manage scaling                                | Provider handles scaling         |
+| **Model updates**     | You update manually                               | Provider updates automatically   |
+| **Performance**       | Depends on your hardware                          | Usually very fast and optimized  |
+| **Cost model**        | One-time infrastructure cost                      | Pay-per-token or subscription    |
+| **Customization**     | Full control over models and fine-tuning          | Limited by provider capabilities |
+| Example               | Ollama  , deepseek                                         | OpenAI      , google gemini , anthropic claude , azure openai                     |
+
+## What is Ollama?
+
+Ollama is an open-source platform used to run LLMs locally. It helps download and serve models such as Llama 3, Qwen, and Mistral on a laptop or server. It exposes a REST API and command-line interface, making it easy to integrate AI capabilities into applications while keeping data private
+
+## Why use Ollama?
+
+* Runs AI models locally
+* Improves data privacy and security
+* No API costs
+* Works offline
+* Easy integration with applications and DevOps tools
+
+**In a DevOps environment, Ollama can be used to run local AI models for log analysis, incident summarization, Kubernetes troubleshooting, script generation, and internal automation while keeping sensitive infrastructure data within the organization's network.**
+
+## 📋 Prerequisites
+
+### Installing Ollama
+
+1. **Download and Install Ollama**
+   ```bash
+   # For Linux
+   curl -fsSL https://ollama.com/install.sh | sh
+
+   # For MacOS
+   brew install ollama
+   ```
+
+2. **Start Ollama Service**
+   ```bash
+   ollama serve
+   ```
+
+3. **Pull Llama3 Model**
+   ```bash
+   ollama pull llama3.2:1b
+   ```
+
+## 🚀 Project Setup
+
+1. **Create Virtual Environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Linux/MacOS
+   # or
+   .\venv\Scripts\activate  # On Windows
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+
+   ```requirements.txt
+   ollama
+   ```
+
+3. **Run the Application**
+   ```bash
+   python3 generate_dockerfile.py
+   ```
+
+### local LLMs
+```bash
+import ollama
+
+PROMPT = """
+ONLY Generate an ideal Dockerfile for {language} with best practices. Do not provide any description
+Include:
+- Base image
+- Installing dependencies
+- Setting working directory
+- Adding source code
+- Running the application
+"""
+
+def generate_dockerfile(language):
+    response = ollama.chat(model='llama3.1:8b', messages=[{'role': 'user', 'content': PROMPT.format(language=language)}])
+    return response['message']['content']
+
+if __name__ == '__main__':
+    language = input("Enter the programming language: ")
+    dockerfile = generate_dockerfile(language)
+    print("\nGenerated Dockerfile:\n")
+    print(dockerfile)
+```
+
+### hosted LLMs
+```python
+import google.generativeai as genai
+import os
+
+# Set your API key here
+os.environ["GOOGLE_API_KEY"] = "xxxxxxxxxxxxxxxxxxxxxxxx"
+
+# Configure the Gemini model
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-pro')
+
+PROMPT = """
+Generate an ideal Dockerfile for {language} with best practices. Just share the dockerfile without any explanation between two lines to make copying dockerfile easy.
+Include:
+- Base image
+- Installing dependencies
+- Setting working directory
+- Adding source code
+- Running the application
+"""
+
+def generate_dockerfile(language):
+    response = model.generate_content(PROMPT.format(language=language))
+    return response.text
+
+if __name__ == '__main__':
+    language = input("Enter the programming language: ")
+    dockerfile = generate_dockerfile(language)
+    print("\nGenerated Dockerfile:\n")
+    print(dockerfile)
+```
+## 💡 How It Works
+
+1. The script takes a programming language as input (e.g., Python, Node.js, Java)
+2. Connects to the Ollama API running locally
+3. Generates an optimized Dockerfile with best practices for the specified language
+4. Returns the Dockerfile content with explanatory comments
+
+## 📝 Example Usage
+
+```bash
+python3 generate_dockerfile.py
+Enter programming language: python
+# Generated Dockerfile will be displayed...
+```
+
+## 🏆 Troubleshooting
+- Make sure Ollama service is running before executing the script.
+- Ensure the correct model is downloaded.
+- Adapt best practices for other programming languages as needed.
